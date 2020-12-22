@@ -17,9 +17,6 @@
         "isolatedModules": true,
         "noEmit": false,
         "baseUrl": "src",
-        "paths": {
-            "@Store": ["client/Store/Store.tsx"]
-        }
     },
     "include": [
         "./src/client/types/index.d.ts",
