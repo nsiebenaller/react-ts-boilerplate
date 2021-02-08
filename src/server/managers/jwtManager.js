@@ -27,6 +27,7 @@ const checkToken = expressJWT({
     getToken: (req) => {
         const token = req.cookies[tokenName];
         if (!token) return null;
+        if (blacklist.includes(token)) return false;
         const verifiedToken = jwt.verify(token, secret);
         if (!verifiedToken) return false;
         const { exp, revoked } = verifiedToken;
@@ -51,8 +52,11 @@ const getToken = (req) => {
     try {
         const verifiedToken = jwt.verify(token, secret);
         if (!verifiedToken) return null;
-        const { exp } = verifiedToken;
+        const { exp, revoked } = verifiedToken;
         if (!exp) return null;
+
+        // Check revoked
+        if (revoked) return false;
 
         // Check if expired
         const now = new Date().getTime();
